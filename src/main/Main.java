@@ -8,11 +8,12 @@ import dao.DepartamentsDAO;
 import dao.EmpleatsDAO;
 import dto.Departament;
 import dto.Empleat;
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static java.util.stream.Collectors.*;
 
 /**
  *
@@ -24,29 +25,29 @@ public class Main {
         List<Empleat> empleados = EmpleatsDAO.getEmpleats();
         List<Departament> departamentos = DepartamentsDAO.getDepartaments();
         // 1.- Imprimeix el primer empleat trobat amb més de 50 anys
-        System.out.println("EJERCICIO 1");
+        System.out.println("--EJERCICIO 1--");
         empleados.stream()
                 .filter(e -> e.getEdat()>50)
                 .findFirst().ifPresent(System.out::println);
              
         // 2. Imprimeix true si tots els empleats son majors d'edat i false en cas contrari
-        System.out.println("--EJERCICIO 2");
+        System.out.println("\n--EJERCICIO 2--");
         System.out.println(empleados.stream()
                 .allMatch(p -> p.getEdat()>=18));
         
         // 3. Imprimeix true si hi ha algun empleat major de 65 anys i false en cas contrari
-        System.out.println("--EJERCICIO 3");
+        System.out.println("\n--EJERCICIO 3--");
         System.out.println(empleados.stream()
                 .anyMatch(p -> p.getEdat()>65));
             
         // 4. Imprimeix el número d'empleats que tenen més de 50 anys
-            System.out.println("--EJERCICIO 4--");
+            System.out.println("\n--EJERCICIO 4--");
             System.out.println(empleados.stream()
                 .filter(p -> p.getEdat() > 50)
                 .count());
             
         // 5. Imprimeix el nom dels empleats del departament d'informàtica, en majúscules.
-            System.out.println("--EJERCICIO 5--");
+            System.out.println("\n--EJERCICIO 5--");
             empleados.stream()
                     .filter(p -> p.getDepartament().equals(DepartamentsDAO.getDepartaments().get(3)))
                     .map(p -> p.getNom().toUpperCase())
@@ -54,14 +55,14 @@ public class Main {
         
         // 6. Imprimeix la quantitat de lletres de l'empleat d'informàtica amb el nom més llarg.
 
-            System.out.println("--EJERCICIO 6--");
+            System.out.println("\n--EJERCICIO 6--");
             empleados.stream()
                     .max((p1, p2) -> p1.getNom().length() - p2.getNom().length())
                     .ifPresent(p -> System.out.println(p.getNom().length()));
                    
         // 7. Imprimeix el nom dels departaments que comencen per C
         
-            System.out.println("--EJERCICIO 7--");
+            System.out.println("\n--EJERCICIO 7--");
             departamentos.stream()
                      .filter(p -> p.getNom().startsWith("C"))
                      .map(Departament::getNom)
@@ -69,7 +70,7 @@ public class Main {
         
         // 8. Imprimeix la suma de totes les edats dels empleats
 
-            System.out.println("--EJERCICIO 8--");
+            System.out.println("\n--EJERCICIO 8--");
             System.out.println(empleados.stream()
                     .mapToInt(Empleat::getEdat)
                     .sum());                 
@@ -77,7 +78,7 @@ public class Main {
         // 9 UTILITZA EL MÈTODE GETEMPLEATS DE LA CLASSE DEPARTAMENT (NOMÉS PER A L'EXERCICI 9 I 10)
         // Imprimeix la quantitat d'empleats de cada departament
 
-            System.out.println("--EJERCICIO 9--");
+            System.out.println("\n--EJERCICIO 9--");
             Map<String,Long> dep = departamentos.stream()
                     .collect(Collectors.toMap(d -> d.getNom(), d -> d.getEmpleats().stream().count()));
             dep.forEach((k,v) -> System.out.println(k+": "+v));
@@ -85,7 +86,7 @@ public class Main {
         // 10. UTILITZANT EL MÈTODE GETEMPLEATS DE LA CLASSE DEPARTAMENT (NOMÉS PER A L'EXERCICI 9 I 10)
         // Imprimeix la llista de noms dels empleats del departament comercial i de comptatilitat (una única llista d'String)
             
-            System.out.println("--EJERCICIO 10--");
+            System.out.println("\n--EJERCICIO 10--");
             departamentos.stream()
                     .filter(p -> p.getNom().equals(DepartamentsDAO.getDepartaments().get(1).getNom()) || p.getNom().equals(DepartamentsDAO.getDepartaments().get(2).getNom()))
                     .flatMap(p -> p.getEmpleats().stream())
@@ -94,7 +95,7 @@ public class Main {
                 
         // 11. El mateix d'abans però mostra els noms ordenats alfabèticament.
         
-            System.out.println("--EJERCICIO 11--");
+            System.out.println("\n--EJERCICIO 11--");
             empleados.stream()
                     .filter(p -> p.getDepartament().getNom().equals(DepartamentsDAO.getDepartaments().get(1).getNom()) || p.getDepartament().getNom().equals(DepartamentsDAO.getDepartaments().get(2).getNom()))
                     .map(Empleat::getNom)
@@ -104,7 +105,7 @@ public class Main {
                                           
         // 12. Mostra la mitjana d'edat dels empleats del departament d'informàtica.
 
-            System.out.println("--EJERCICIO 12--");
+            System.out.println("\n--EJERCICIO 12--");
             empleados.stream()
                     .filter(p -> p.getDepartament().getNom().equals(DepartamentsDAO.getDepartaments().get(3).getNom()))
                     .mapToInt(Empleat::getEdat)
@@ -112,26 +113,74 @@ public class Main {
                     
         // 13. Mostra un String que serà el resultat de concatenar la primera lletra de cada departament.
 
-            System.out.println("--EJERCICIO 13");
+            System.out.println("\n--EJERCICIO 13--");
             System.out.println(departamentos.stream()
                     .map(p -> p.getNom().charAt(0))
                     .map(String::valueOf)
                     .reduce("",(i,p) -> i + p));
             
         // 14. Mostra el número de telèfon més alt dels departaments.
+        
+            System.out.println("\n--EJERCICIO 14--");
+            departamentos.stream()
+                    .mapToInt(Departament::getTelefon)
+                    .max()
+                    .ifPresent(System.out::println);
 
         // 15. Mostra el departament complet amb el número de telèfon més alt.
 
+            System.out.println("\n--EJERCICIO 15--");
+            departamentos.stream()
+                    .sorted(Comparator.comparingInt(Departament::getTelefon).reversed())
+                    .findFirst().ifPresent(System.out::println);
+            
         // 16. Sense fer ús del mètode "getEmpleats". Dels departament que tenen treballadors, mostrar el nom del departament i el nombre de treballadors que hi treballen.
 
+            System.out.println("\n--EJERCICIO 16--");
+            empleados.stream()
+                     .collect(groupingBy(Empleat::getDepartament, counting())).forEach((a,b) -> System.out.println(a.getNom()+": "+b));
+            
         // 17A. Guarda en un Map un registre per a cada Departament (que tinga treballadors) que tinga associat com a valor la llista d'empleats d'eixe departament
 
+            System.out.println("\n--EJERCICIO 17A--");
+            empleados.stream()
+                    .filter(p -> !p.getDepartament().getNom().isEmpty())               
+                    .collect(groupingBy(Empleat::getDepartament, toList()))
+                    .forEach((a,b) -> {System.out.println("--------");
+                                       System.out.println(a.getNom());
+                                       System.out.println("--------");
+                                       b.forEach(System.out::println);
+                            });
+    
         // 17B. Igual que l'anterior pero la llista no serà d'empleats sino del nom dels empleats
 
+            System.out.println("\n--EJERCICIO 17B--");
+            empleados.stream()
+                    .filter(p -> !p.getDepartament().getNom().isEmpty())               
+                    .collect(groupingBy(Empleat::getDepartament, mapping(Empleat::getNom, toList())))
+                    .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
+            
         // 17C. Igual que l'anterior pero amb els empleats ordenats alfabèticament
         
+            System.out.println("\n--EJERCICIO 17C--");
+            empleados.stream()
+                    .filter(p -> !p.getDepartament().getNom().isEmpty())   
+                    .collect(groupingBy(Empleat::getDepartament,
+                            mapping(Empleat::getNom, 
+                                    collectingAndThen(toList(), p -> {
+                                        p.sort(String::compareTo);
+                                        return p;
+                                    }))))
+                    .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
+            
         // 18A. Obtín un Map que continga per a cada departament una llista d'enters grans (BigInteger) que es corresponguen amb les edats dels empleats d'eixe departament
        
+            System.out.println("\n--EJERCICIO 18A--");
+            empleados.stream()
+                    .collect(groupingBy(Empleat::getDepartament, 
+                            mapping(p -> BigInteger.valueOf(p.getEdat()), toList())))
+                    .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
+                    
         // 18B. El mateix que abans però en comptes de l'edat, el probable següent número primer
 
         // 19. Obtín un Map que continga per a cada departament l'empleat més jove.
