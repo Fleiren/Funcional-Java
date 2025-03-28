@@ -136,9 +136,11 @@ public class Main {
             
         // 16. Sense fer ús del mètode "getEmpleats". Dels departament que tenen treballadors, mostrar el nom del departament i el nombre de treballadors que hi treballen.
 
-            System.out.println("\n--EJERCICIO 16--");
-            empleados.stream()
-                     .collect(groupingBy(Empleat::getDepartament, counting())).forEach((a,b) -> System.out.println(a.getNom()+": "+b));
+            System.out.println("\n--EJERCICIO 16--");          
+            departamentos.stream()
+                    .filter(p -> !p.getEmpleats().isEmpty())
+                    .collect(toMap(Departament::getNom, d -> d.getEmpleats().size()))
+                    .forEach((a,b) -> System.out.println(a+": "+b));
             
         // 17A. Guarda en un Map un registre per a cada Departament (que tinga treballadors) que tinga associat com a valor la llista d'empleats d'eixe departament
 
@@ -209,9 +211,15 @@ public class Main {
             
             
         // 21. Obtín un Map que conté com a clau el DNI dels empleats i com a valor el nom d'eixe empleat
-
+            System.out.println("\n--EJERCICIO 21--");
+            empleados.stream()
+                    .collect(Collectors.toMap(Empleat::getDni, Empleat::getNom));
+                            
+                    
+        
         // 21. Obtín una llista d'Strings que continga DNI dels empleats i el nom d'eixe empleat amb el format DNI - Nom. Llista ordenada per DNI
 
+            System.out.println("\n--EJERCICIO 22--");
         // 22A. Donat un array bidimensional d'Integer transformar-lo en un array unidimensional amb els mateixos valors:
         Integer[][] matriuInteger = {{3, 2, 5}, {0, -8, 7}, {9, 9, 6}};
 
