@@ -182,11 +182,32 @@ public class Main {
                     .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
                     
         // 18B. El mateix que abans però en comptes de l'edat, el probable següent número primer
-
+        
+            System.out.println("\n--EJERCICIO 18B--");
+            empleados.stream()
+                    .collect(groupingBy(Empleat::getDepartament,
+                            mapping(emp -> BigInteger.valueOf(emp.getEdat()).nextProbablePrime(), toList())))
+                    .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
+                            
         // 19. Obtín un Map que continga per a cada departament l'empleat més jove.
-
+            System.out.println("\n--EJERCICIO 19--");
+            empleados.stream()
+                    .collect(groupingBy(Empleat::getDepartament, 
+                            mapping(emp -> emp.getEdat(), collectingAndThen(toList(), list -> {
+                                list.sort(Comparator.comparingInt(Integer::intValue));
+                                return list.getFirst();
+                            })))) 
+                    .forEach((a,b) -> System.out.println(a.getNom()+": "+b.toString()));
         // 20. Obtín un String que continga el mateix que abans, amb el format "Departament1:Empleat1, Departament2:Empleat2 ..."
-
+            System.out.println("\n--EJERCICIO 20--");
+            System.out.println(empleados.stream()
+                   .collect(groupingBy(emp -> emp.getDepartament().getNom(), 
+                    mapping(emp -> emp.getEdat(), collectingAndThen(toList(), list -> {
+                        list.sort(Comparator.comparingInt(Integer::intValue));
+                        return list.getFirst();
+                    })))).entrySet().toString());
+            
+            
         // 21. Obtín un Map que conté com a clau el DNI dels empleats i com a valor el nom d'eixe empleat
 
         // 21. Obtín una llista d'Strings que continga DNI dels empleats i el nom d'eixe empleat amb el format DNI - Nom. Llista ordenada per DNI
